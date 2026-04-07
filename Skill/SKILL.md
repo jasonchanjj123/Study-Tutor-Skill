@@ -27,125 +27,89 @@ After reading, produce a **Content Inventory** (keep this internal, don't show i
 
 ## Step 2: Identify Gaps and Enrich
 
-This is where you add value beyond what the notes contain. For each topic in your inventory:
+For each topic in your inventory:
 
-1. **Missing prerequisites** — If the notes assume knowledge the student might not have, add a brief foundation. Example: if the slides jump into "gradient descent" without explaining partial derivatives, add that bridge.
-2. **Incomplete explanations** — Lecture notes are often telegraphic. Expand compressed bullet points into full explanations with context and intuition.
-3. **Missing connections** — Link concepts across different lectures or files. "This relates to X from the earlier lecture because..."
-4. **Common misconceptions** — For each major concept, note what students typically get wrong and why.
-5. **Real-world anchors** — Add concrete examples, analogies, or applications that ground abstract concepts.
+1. **Missing prerequisites** — If the notes assume knowledge the student might not have, add a brief foundation.
+2. **Incomplete explanations** — Expand compressed bullet points into full explanations with context and intuition.
+3. **Missing connections** — Link concepts across different lectures or files.
+4. **Common misconceptions** — Note what students typically get wrong and why.
+5. **Real-world anchors** — Add concrete examples, analogies, or applications.
 
 ## Step 3: Build the Study Guide (HTML output)
 
-Generate a single, comprehensive HTML study guide. This is your primary deliverable. Read `/mnt/skills/public/frontend-design/SKILL.md` before building it — the guide should look polished and be pleasant to study from.
+Generate a single, comprehensive HTML study guide. Read `/mnt/skills/public/frontend-design/SKILL.md` before building it.
 
-The HTML study guide must include ALL of the following sections. Each section targets a different cognitive mechanism:
+### LaTeX / Math Rendering — CRITICAL
+
+**Read `references/latex-guide.md` before building the HTML** whenever the source material contains ANY mathematical notation — formulas, equations, Greek letters, subscripts/superscripts, set notation, statistics symbols, etc. This applies to STEM, economics, finance, logic, linguistics, and anything with symbolic notation. Following it prevents the #1 class of rendering bugs.
+
+### Knowledge Graph / Concept Map — CRITICAL
+
+**Read `references/graph-guide.md` before building the knowledge graph section.** This covers D3 force-directed graph implementation with node dragging, zoom/pan, labeled edges, color-coded relationship types, and responsive sizing.
+
+---
+
+The HTML study guide must include ALL of the following sections:
 
 ### Section A: Chapter Summary (Organized Knowledge)
-Write a clear, structured summary of the entire chapter/lecture material. This is the student's reference document. Organize by topic, not by slide order — restructure for logical flow. Use prose paragraphs, not bullet dumps. Include all enrichments from Step 2 woven naturally into the text.
+Structured summary organized by topic, not slide order. Prose paragraphs, not bullet dumps. Include enrichments from Step 2. **For math-heavy material**, embed LaTeX inline and as display blocks — every formula with a plain-English explanation.
 
 ### Section B: Flashcards — Active Recall Deck
-Create 15–30 flashcards (more for dense material, fewer for light material). Build them as interactive flip-cards in the HTML.
-
-**Flashcard design principles:**
-- One atomic fact or concept per card — never bundle multiple ideas
-- Question side should force retrieval, not recognition. Bad: "True or false: TCP uses a 3-way handshake." Good: "Describe the steps in the TCP connection establishment process and explain why each step is necessary."
-- Include a mix of: factual recall, conceptual understanding, application/scenario cards, and comparison cards
-- For code-related material: include cards that show code and ask "what does this output?" or "what's wrong with this code?"
-- For formula-heavy material: one side shows the scenario, other side shows which formula to apply and why
-- Tag each card with difficulty: 🟢 Basic, 🟡 Intermediate, 🔴 Advanced
+15–30 interactive flip-cards. One atomic fact per card. Force retrieval, not recognition. Mix factual recall, conceptual, application, and comparison cards. **Render all formulas with LaTeX.** Tag difficulty: 🟢 Basic, 🟡 Intermediate, 🔴 Advanced.
 
 ### Section C: Feynman Technique Explanations
-Pick the 3–5 hardest or most important concepts. For each one, write an explanation as if teaching it to a 12-year-old — no jargon allowed. Use analogies, everyday examples, and simple language. This forces deep understanding because you can't simplify what you don't truly grasp.
-
-Format:
-- **Concept name**
-- **The simple explanation** (plain language, analogies, examples)
-- **Where the analogy breaks down** (so the student knows the limits)
-- **The precise version** (now restate it with proper terminology, building on the intuition)
+3–5 hardest concepts explained as if teaching a 12-year-old. For each: simple explanation → where the analogy breaks down → precise version with proper LaTeX notation.
 
 ### Section D: Knowledge Graph — Zettelkasten-Style Connections
-Build a visual concept map showing how ideas in this chapter connect to each other and to prerequisite knowledge. Implement this as an interactive SVG or canvas element in the HTML.
-
-Each node is a concept. Each edge is a relationship labeled with the connection type:
-- "requires" (prerequisite)
-- "extends" (builds upon)
-- "contrasts with" (compare/contrast)
-- "is example of" (instance)
-- "applies to" (real-world use)
-
-Below the visual map, write out the connections as prose — a paragraph for each major link explaining *why* these concepts are connected. This is the Zettelkasten "permanent note" approach: the value is in the explicit connections, not the isolated facts.
+Interactive D3 force-directed concept map. **Follow `references/graph-guide.md`.** Nodes = concepts, edges = labeled relationships (requires, extends, contrasts with, is example of, applies to). Below the map, prose paragraphs explaining each major connection.
 
 ### Section E: Chapter Exercises — Test Your Understanding
+10–20 questions in three tiers:
+- **Tier 1 Recall (30%)**: Fill-in-the-blank, definitions, short-answer
+- **Tier 2 Application (40%)**: Problem-solving, scenarios. **Step-by-step LaTeX worked solutions** for math.
+- **Tier 3 Synthesis (30%)**: Compare/contrast, design, open-ended analysis
 
-Create a chapter exercise set with 10–20 questions, organized in three tiers:
-
-**Tier 1: Recall (30%)** — Can you remember the basics?
-- Fill-in-the-blank, definitions, short-answer factual questions
-- These test whether the student has the raw knowledge in memory
-
-**Tier 2: Application (40%)** — Can you use what you know?
-- Problem-solving, code-writing, scenario analysis
-- Give a situation the student hasn't seen before and ask them to apply concepts
-- For programming courses: give code to debug, extend, or write from scratch
-- For math/science courses: word problems requiring formula selection and application
-
-**Tier 3: Synthesis (30%)** — Can you connect and create?
-- Compare/contrast questions across multiple concepts
-- "Design a system that..." or "Explain why X is better than Y for scenario Z"
-- Questions that require integrating knowledge from multiple parts of the chapter
-- Open-ended analysis questions
-
-**For every question, include:**
-- The question itself
-- A hidden answer/solution (revealed on click in the HTML)
-- A brief explanation of *why* the answer is correct — this is where learning happens
+Each question: question + hidden answer + explanation of why it's correct.
 
 ### Section F: Quick-Reference Cheat Sheet
-A concise, one-screen-scrollable reference card with:
-- Key formulas / syntax / commands
-- Critical definitions (one line each)
-- Common pitfalls and how to avoid them
-- A "before the exam, review these 5 things" priority list
+Key formulas in LaTeX grouped by topic, critical definitions, common pitfalls, "top 5 things to review before the exam."
+
+### Section G: Study Planner (Adaptive)
+Collapsible panel with: estimated study time, Pomodoro session breakdown, spaced repetition calendar (Day 1/2/3/5/7 plan based on Ebbinghaus curve), and progress checkboxes (localStorage).
 
 ## Step 4: Output
 
-1. Save the HTML study guide to `/mnt/user-data/outputs/` with a descriptive filename like `study-guide-[topic].html`
-2. Present the file to the user using `present_files`
-3. Give a brief conversational summary: what material was covered, what gaps were filled, and any suggestions for further study
+1. Save to `/mnt/user-data/outputs/study-guide-[topic].html`
+2. Present via `present_files`
+3. Brief conversational summary of coverage, gaps filled, and further study suggestions
 
 ## Design Guidelines for the HTML
 
-- Use a clean, readable design with a sidebar navigation for jumping between sections
-- Dark mode toggle (students study at night)
-- Flashcards should be interactive: click to flip, arrow keys to navigate
-- Exercise answers should be hidden behind a "Show Answer" toggle
-- Knowledge graph should be zoomable/pannable or at least clearly readable
-- Use syntax highlighting for any code blocks (embed a lightweight highlighter like Prism.js from CDN, or use inline CSS)
-- Mobile-responsive — students study on phones
-- Use a color-coding system consistently: 🟢 green for "basic/easy", 🟡 amber for "intermediate", 🔴 red for "advanced/hard"
-- Print-friendly: include a `@media print` stylesheet that linearizes the layout
+- Sidebar navigation, dark mode toggle, mobile-responsive
+- Flashcards: click-to-flip, arrow-key navigation
+- Exercise answers: "Show Answer" toggle
+- Knowledge graph: D3 zoom/pan
+- Code syntax highlighting (Prism.js CDN or inline CSS)
+- Color-coding: 🟢 basic, 🟡 intermediate, 🔴 advanced
+- `@media print` stylesheet
+- **All math via KaTeX** — never plain-text math
 
 ## Tone and Style
 
-- Warm, encouraging, but rigorous — like a great TA who genuinely wants you to succeed
-- Use "you" language: "You'll notice that..." not "One can observe that..."
-- When filling gaps or adding context, explicitly flag it: "📝 *Your notes didn't cover this, but it's important:*" so the student knows what's from the lecture vs. what you added
-- For difficult concepts, acknowledge the difficulty: "This trips up most students because..."
-- Keep the energy up — studying is a grind, and a little personality helps
+- Warm, encouraging, rigorous — like a great TA
+- "You" language, flag enrichments with 📝, acknowledge difficulty
 
-## Handling Different Course Types
+## Course Type Adaptations
 
-Adapt your approach based on what the material looks like:
-
-- **Programming courses**: Heavy on code flashcards, debugging exercises, "what does this output?" questions. Include runnable code examples.
-- **Math/Science courses**: Formula derivation in Feynman section, calculation-heavy exercises, visual diagrams for processes.
-- **Humanities/Social Sciences**: Emphasis on argument analysis, compare/contrast, essay-style synthesis questions. Knowledge graph shows how thinkers/theories/events connect.
-- **Business/Economics courses**: Case-study exercises, graph interpretation, scenario-based application questions.
+- **Programming**: Code flashcards, debugging exercises, output prediction
+- **Math/Science**: LaTeX mandatory. Derivations in Feynman section. Visual diagrams.
+- **Humanities**: Argument analysis, compare/contrast, essay synthesis
+- **Business/Economics**: Case studies, graph interpretation, LaTeX for models
 
 ## Important Reminders
 
-- Always read the relevant file-reading skills BEFORE attempting to extract content from uploaded files
-- The knowledge graph does not need to be a fully interactive D3 visualization — a clean SVG with labeled nodes and edges is perfectly fine and more reliable
-- If the material is very large (e.g., 10+ lecture files), ask the user which chapters or topics to focus on rather than trying to cover everything at once
-- If you're unsure about the course level (intro vs. advanced), ask — it changes the depth of enrichment and difficulty of exercises
+- Read relevant file-reading skills BEFORE extracting content
+- Read `references/latex-guide.md` for ANY material with math/formulas/symbols
+- Read `references/graph-guide.md` before building the knowledge graph
+- For 10+ files, ask user which topics to focus on
+- If unsure about course level, ask
